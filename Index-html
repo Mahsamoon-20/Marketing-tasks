@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth & Marketing — Task Breakdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-dark: #8B6914;
+    --gold-glow: rgba(201,168,76,0.18);
+    --bg: #0d0d0d;
+    --bg2: #141414;
+    --bg3: #1a1a1a;
+    --text: #e8e8e8;
+    --muted: #888;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 300;
+min-height: 100vh;
+padding: 0 0 80px;
+}
+
+/* Noise overlay */
+body::before {
+content: ‘’;
+position: fixed; inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 200 200’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.85’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.03’/%3E%3C/svg%3E”);
+pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+header {
+text-align: center;
+padding: 64px 24px 48px;
+position: relative;
+border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+
+header::after {
+content: ‘’;
+position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+width: 120px; height: 2px;
+background: linear-gradient(90deg, transparent, var(–gold), transparent);
+}
+
+.header-label {
+font-family: ‘DM Sans’, sans-serif;
+font-size: 11px;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 16px;
+}
+
+h1 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(32px, 5vw, 52px);
+font-weight: 700;
+color: var(–gold-light);
+line-height: 1.15;
+margin-bottom: 12px;
+}
+
+.subtitle {
+color: var(–muted);
+font-size: 14px;
+letter-spacing: 0.5px;
+}
+
+/* Filter tabs */
+.filters {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+justify-content: center;
+padding: 36px 24px 0;
+position: relative; z-index: 1;
+}
+
+.filter-btn {
+background: var(–bg3);
+border: 1px solid rgba(201,168,76,0.2);
+color: var(–muted);
+padding: 8px 18px;
+border-radius: 40px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 12px;
+letter-spacing: 1px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.25s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+background: var(–gold-glow);
+border-color: var(–gold);
+color: var(–gold-light);
+}
+
+/* Main grid */
+.grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+gap: 24px;
+max-width: 1200px;
+margin: 40px auto 0;
+padding: 0 24px;
+position: relative; z-index: 1;
+}
+
+/* Service card */
+.card {
+background: var(–bg2);
+border: 1px solid rgba(201,168,76,0.12);
+border-radius: 12px;
+overflow: hidden;
+transition: border-color 0.3s, transform 0.3s;
+animation: fadeUp 0.5s ease both;
+}
+
+.card:hover {
+border-color: rgba(201,168,76,0.4);
+transform: translateY(-3px);
+}
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(24px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-header {
+padding: 22px 24px 18px;
+border-bottom: 1px solid rgba(201,168,76,0.1);
+display: flex;
+align-items: flex-start;
+gap: 14px;
+cursor: pointer;
+user-select: none;
+}
+
+.card-icon {
+width: 40px; height: 40px;
+border-radius: 8px;
+background: var(–gold-glow);
+border: 1px solid rgba(201,168,76,0.25);
+display: flex; align-items: center; justify-content: center;
+font-size: 18px;
+flex-shrink: 0;
+}
+
+.card-meta { flex: 1; }
+
+.card-category {
+font-size: 10px;
+letter-spacing: 2.5px;
+text-transform: uppercase;
+color: var(–gold-dark);
+margin-bottom: 4px;
+}
+
+.card-title {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 19px;
+font-weight: 600;
+color: var(–gold-light);
+line-height: 1.2;
+}
+
+.card-price {
+font-size: 11px;
+color: var(–gold);
+margin-top: 4px;
+}
+
+.toggle-icon {
+font-size: 18px;
+color: var(–gold-dark);
+transition: transform 0.3s;
+flex-shrink: 0;
+margin-top: 4px;
+}
+
+.card.open .toggle-icon { transform: rotate(180deg); }
+
+/* Steps */
+.steps {
+display: none;
+padding: 20px 24px 24px;
+}
+
+.card.open .steps { display: block; }
+
+.step {
+display: flex;
+gap: 14px;
+padding: 12px 0;
+border-bottom: 1px solid rgba(255,255,255,0.04);
+animation: fadeIn 0.3s ease both;
+}
+
+.step:last-child { border-bottom: none; padding-bottom: 0; }
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateX(-8px); }
+to   { opacity: 1; transform: translateX(0); }
+}
+
+.step-num {
+width: 24px; height: 24px;
+border-radius: 50%;
+background: var(–gold-glow);
+border: 1px solid var(–gold-dark);
+color: var(–gold);
+font-size: 10px;
+font-weight: 500;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0;
+margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+
+.step-title {
+font-size: 13px;
+font-weight: 500;
+color: var(–text);
+margin-bottom: 3px;
+}
+
+.step-desc {
+font-size: 12px;
+color: var(–muted);
+line-height: 1.6;
+}
+
+/* Progress bar */
+.progress-wrap {
+padding: 0 24px 16px;
+display: none;
+}
+.card.open .progress-wrap { display: block; }
+
+.progress-bar {
+height: 2px;
+background: rgba(255,255,255,0.06);
+border-radius: 2px;
+overflow: hidden;
+margin-bottom: 6px;
+}
+
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–gold-dark), var(–gold-light));
+border-radius: 2px;
+width: 0%;
+transition: width 0.5s ease;
+}
+
+.progress-label {
+font-size: 10px;
+color: var(–muted);
+letter-spacing: 1px;
+}
+
+/* Expand all */
+.expand-all-wrap {
+text-align: center;
+padding: 32px 0 0;
+position: relative; z-index: 1;
+}
+
+.expand-all {
+background: none;
+border: 1px solid rgba(201,168,76,0.3);
+color: var(–gold);
+padding: 10px 28px;
+border-radius: 40px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 12px;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.25s;
+}
+
+.expand-all:hover {
+background: var(–gold-glow);
+border-color: var(–gold);
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="header-label">Family Business Operations</div>
+  <h1>Step-by-Step Task Breakdown</h1>
+  <p class="subtitle">Every service, broken into actionable steps</p>
+</header>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filter('all', this)">All Services</button>
+  <button class="filter-btn" onclick="filter('web', this)">Website Dev</button>
+  <button class="filter-btn" onclick="filter('ads', this)">Paid Ads</button>
+  <button class="filter-btn" onclick="filter('funnel', this)">Funnels</button>
+  <button class="filter-btn" onclick="filter('email', this)">Email</button>
+  <button class="filter-btn" onclick="filter('creative', this)">Creative</button>
+  <button class="filter-btn" onclick="filter('package', this)">Packages</button>
+</div>
+
+<div class="expand-all-wrap">
+  <button class="expand-all" onclick="expandAll()">Expand All</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const services = [
+  {
+    id: 'starter-web',
+    category: 'web',
+    icon: '🌐',
+    title: 'Starter Website',
+    price: '$2,000 CAD',
+    steps: [
+      { title: 'Discovery Call', desc: 'Meet the client, understand their business goals, target audience, competitors, and brand preferences.' },
+      { title: 'Collect Assets', desc: 'Gather logo files, brand colors, fonts, photos, product/service descriptions, and any existing content.' },
+      { title: 'Choose Platform', desc: 'Decide on the CMS (Shopify, WordPress, Wix, etc.) based on client needs and budget.' },
+      { title: 'Sitemap & Structure', desc: 'Map out all pages needed: Home, About, Services, Contact, etc.' },
+      { title: 'Domain & Hosting Setup', desc: 'Register domain if needed, set up hosting, configure DNS settings.' },
+      { title: 'Design Mockup', desc: 'Create a visual wireframe or mockup of the homepage for client approval.' },
+      { title: 'Build the Website', desc: 'Develop all pages using the chosen platform. Apply branding, layout, and content.' },
+      { title: 'Mobile Optimization', desc: 'Ensure every page looks perfect on phones and tablets.' },
+      { title: 'SEO Basics', desc: 'Add meta titles, descriptions, alt text for images, and basic keyword setup.' },
+      { title: 'Test & QA', desc: 'Test all links, forms, buttons, and loading speed across browsers.' },
+      { title: 'Client Review', desc: 'Share the site with the client for feedback and make revision rounds.' },
+      { title: 'Launch & Handover', desc: 'Go live, transfer ownership credentials, and provide a brief training session.' },
+    ]
+  },
+  {
+    id: 'growth-web',
+    category: 'web',
+    icon: '🚀',
+    title: 'Growth Website',
+    price: '$3,500 – $5,000 CAD',
+    steps: [
+      { title: 'Discovery & Strategy Session', desc: 'Deep-dive into brand positioning, customer journey, conversion goals, and competitor analysis.' },
+      { title: 'Collect & Audit Assets', desc: 'Gather all brand assets and audit any existing website for what to keep or rebuild.' },
+      { title: 'Platform & Tech Stack Decision', desc: 'Choose the right CMS and tools (e.g. Shopify + Klaviyo, WordPress + Elementor).' },
+      { title: 'Sitemap & User Journey Mapping', desc: 'Plan every page and how users will navigate toward a conversion.' },
+      { title: 'Domain, Hosting & SSL Setup', desc: 'Register domain, configure hosting, install SSL certificate for security.' },
+      { title: 'Wireframes & UX Design', desc: 'Design wireframes for key pages focusing on user experience and conversion flow.' },
+      { title: 'Visual Design (High Fidelity)', desc: 'Create full-design mockups with brand colors, typography, and imagery.' },
+      { title: 'Development', desc: 'Build all pages, custom sections, and integrations (forms, chat, booking, etc.).' },
+      { title: 'Conversion Elements', desc: 'Add CTAs, lead capture forms, trust badges, testimonials, and social proof.' },
+      { title: 'Speed & Performance Optimization', desc: 'Compress images, enable caching, optimize code for fast load times.' },
+      { title: 'SEO On-Page Setup', desc: 'Set up meta data, schema markup, sitemap.xml, robots.txt, and Google Search Console.' },
+      { title: 'Analytics Integration', desc: 'Install Google Analytics 4, set up Goals and conversion tracking.' },
+      { title: 'Cross-Browser & Mobile QA', desc: 'Test on all major browsers and devices. Fix any layout or functionality issues.' },
+      { title: 'Client Review & Revisions', desc: 'Present to client, gather feedback, complete up to 2 revision rounds.' },
+      { title: 'Launch & Training', desc: 'Deploy live site, walk client through the backend, hand over all credentials.' },
+    ]
+  },
+  {
+    id: 'premium-web',
+    category: 'web',
+    icon: '💎',
+    title: 'Premium Custom Website',
+    price: '$6,000 – $10,000+ CAD',
+    steps: [
+      { title: 'Brand Strategy Workshop', desc: 'Full session covering brand voice, positioning, ICP, unique value proposition, and visual identity.' },
+      { title: 'Competitive & Market Research', desc: 'Analyze top competitors, identify design trends, and find differentiation opportunities.' },
+      { title: 'Content Strategy', desc: 'Plan all written content, messaging hierarchy, and copywriting for key pages.' },
+      { title: 'Custom UI/UX Design', desc: 'Design a fully custom interface in Figma — no templates. Multiple concept directions presented.' },
+      { title: 'Client Design Approval', desc: 'Review design concepts, align on direction, finalize before development begins.' },
+      { title: 'Custom Development', desc: 'Hand-code or custom-build the website with animations, interactions, and unique features.' },
+      { title: 'Third-Party Integrations', desc: 'Integrate CRM, booking systems, payment gateways, chatbots, or any requested tools.' },
+      { title: 'Copywriting & Content Input', desc: 'Write or refine all website copy to match brand voice and SEO requirements.' },
+      { title: 'Advanced SEO Setup', desc: 'Full technical SEO audit, structured data, internal linking, page speed optimization.' },
+      { title: 'Conversion Rate Optimization', desc: 'Apply CRO best practices: heatmap planning, A/B test structures, funnel analysis.' },
+      { title: 'Analytics & Tag Manager Setup', desc: 'Configure GA4, Google Tag Manager, Facebook Pixel, and any ad platform tracking.' },
+      { title: 'Security & Performance Hardening', desc: 'Set up firewall, backups, CDN, caching layers, and security monitoring.' },
+      { title: 'Full QA & Accessibility Check', desc: 'Test every feature, flow, and form. Run accessibility (WCAG) and performance audits.' },
+      { title: 'Staged Launch', desc: 'Soft-launch to a small audience, monitor for issues before full public launch.' },
+      { title: 'Full Launch & Handover Package', desc: 'Go live, deliver documentation, training sessions, and a 30-day support window.' },
+    ]
+  },
+  {
+    id: 'campaign-setup',
+    category: 'ads',
+    icon: '🎯',
+    title: 'Ad Campaign Setup',
+    price: '$800 – $1,200 CAD',
+    steps: [
+      { title: 'Client Onboarding', desc: 'Get access to Google Ads / Meta Ads account. Understand the offer, budget, and goals.' },
+      { title: 'Audience Research', desc: 'Define target demographics, interests, behaviors, and build audience personas.' },
+      { title: 'Keyword Research', desc: 'For Google Ads: research high-intent keywords, negative keywords, and match types.' },
+      { title: 'Competitor Ad Analysis', desc: 'Study what ads competitors are running using tools like Google Auction Insights or Meta Ad Library.' },
+      { title: 'Campaign Structure Planning', desc: 'Plan campaign structure: campaigns, ad groups/sets, and ad variations.' },
+      { title: 'Ad Copy Writing', desc: 'Write compelling headlines, descriptions, and CTAs for all ad variations.' },
+      { title: 'Creative Briefing', desc: 'Specify image/video requirements or prepare basic visuals for ads.' },
+      { title: 'Build Campaigns in Platform', desc: 'Set up campaigns, targeting, bidding strategy, and ad schedules in the ad platform.' },
+      { title: 'Conversion Tracking Setup', desc: 'Install tracking pixels, configure conversion events (purchases, leads, etc.).' },
+      { title: 'Review & Test', desc: 'Review all settings, run a test to confirm tracking fires correctly.' },
+      { title: 'Client Sign-Off & Launch', desc: 'Present campaign setup to client for approval, then activate campaigns.' },
+    ]
+  },
+  {
+    id: 'monthly-ads',
+    category: 'ads',
+    icon: '📊',
+    title: 'Monthly Ad Management',
+    price: '$1,200 – $2,500 CAD/month',
+    steps: [
+      { title: 'Weekly Performance Check', desc: 'Monitor key metrics: CTR, CPC, ROAS, conversion rate, and spend vs. budget.' },
+      { title: 'Bid Adjustments', desc: 'Optimize bids by device, time of day, location, and audience segment.' },
+      { title: 'Keyword Optimization', desc: 'Add new keywords, pause underperformers, expand negative keyword list.' },
+      { title: 'Ad Copy Testing', desc: 'Rotate and test new ad headlines and descriptions to improve CTR.' },
+      { title: 'Audience Refinement', desc: 'Adjust targeting based on performance data — expand winners, cut losers.' },
+      { title: 'Creative Refresh', desc: 'Update ad images/videos monthly to prevent ad fatigue.' },
+      { title: 'Landing Page Feedback', desc: 'Flag any landing page issues affecting conversion rate.' },
+      { title: 'Budget Reallocation', desc: 'Shift budget toward highest-performing campaigns and ad sets.' },
+      { title: 'Monthly Report', desc: 'Deliver a clear performance report with insights, wins, losses, and next month plan.' },
+      { title: 'Strategy Call', desc: 'Monthly check-in with client to review results and align on next steps.' },
+    ]
+  },
+  {
+    id: 'landing-page',
+    category: 'funnel',
+    icon: '📄',
+    title: 'Landing Page Optimization',
+    price: '$800 – $1,500 CAD',
+    steps: [
+      { title: 'Current Page Audit', desc: 'Analyze the existing landing page: layout, copy, CTA placement, and load speed.' },
+      { title: 'Heatmap & Data Review', desc: 'Review any existing heatmap or analytics data to find where users drop off.' },
+      { title: 'Define Conversion Goal', desc: 'Clarify the #1 action the page should drive (sign-up, purchase, call booking, etc.).' },
+      { title: 'Copywriting Revisions', desc: 'Rewrite or refine headline, subheadline, body copy, and CTA to reduce friction.' },
+      { title: 'Visual Hierarchy Redesign', desc: 'Reorganize page sections so the most important elements appear first and clearly.' },
+      { title: 'Trust Elements', desc: 'Add or improve testimonials, guarantees, logos, reviews, and social proof.' },
+      { title: 'CTA Optimization', desc: 'Redesign and test CTA buttons — color, text, placement, and size.' },
+      { title: 'Mobile Optimization', desc: 'Ensure the page converts just as well on mobile as desktop.' },
+      { title: 'Speed Optimization', desc: 'Compress images, reduce scripts, improve load time (aim under 3 seconds).' },
+      { title: 'A/B Test Setup', desc: 'Set up an A/B test between the original and new version using a testing tool.' },
+      { title: 'Track & Report', desc: 'Monitor conversion rates post-launch and deliver a results report after 2–4 weeks.' },
+    ]
+  },
+  {
+    id: 'full-funnel',
+    category: 'funnel',
+    icon: '🔄',
+    title: 'Full Funnel Setup',
+    price: '$2,000 – $4,000 CAD',
+    steps: [
+      { title: 'Funnel Strategy Session', desc: 'Map the customer journey from cold awareness to purchase and repeat buy.' },
+      { title: 'Define Funnel Stages', desc: 'Identify TOFU (awareness), MOFU (consideration), and BOFU (decision) content needs.' },
+      { title: 'Lead Magnet Creation', desc: 'Create a free offer (PDF, quiz, discount, free trial) to capture leads at the top.' },
+      { title: 'Opt-in / Landing Page Build', desc: 'Build a high-converting opt-in page to collect leads.' },
+      { title: 'Thank You Page', desc: 'Create a thank-you page with next steps, upsell offer, or instructions.' },
+      { title: 'Email Sequence Setup', desc: 'Write and set up a 5–7 email nurture sequence to warm up leads.' },
+      { title: 'Sales Page (if needed)', desc: 'Build or optimize the main offer/sales page with full persuasive copy.' },
+      { title: 'Retargeting Audiences', desc: 'Create pixel-based retargeting audiences for each stage of the funnel.' },
+      { title: 'Upsell / Cross-sell Setup', desc: 'Add post-purchase upsell or order bump to increase average order value.' },
+      { title: 'Tracking & Attribution', desc: 'Set up end-to-end tracking so every conversion is tied to its traffic source.' },
+      { title: 'Test the Full Flow', desc: 'Run through the entire funnel as a real user and fix any issues.' },
+      { title: 'Launch & Monitor', desc: 'Go live, drive traffic, monitor conversion at each stage for the first 2 weeks.' },
+    ]
+  },
+  {
+    id: 'email-setup',
+    category: 'email',
+    icon: '✉️',
+    title: 'Email Flow Setup',
+    price: '$600 – $1,200 CAD',
+    steps: [
+      { title: 'Platform Setup', desc: 'Set up or audit email platform (Klaviyo, Mailchimp, ActiveCampaign, etc.).' },
+      { title: 'Domain Authentication', desc: 'Configure SPF, DKIM, and DMARC records to ensure emails land in inbox, not spam.' },
+      { title: 'List Segmentation Strategy', desc: 'Define audience segments (new leads, buyers, VIPs, cold subscribers, etc.).' },
+      { title: 'Flow Mapping', desc: 'Map which automated flows are needed: welcome, abandoned cart, post-purchase, win-back, etc.' },
+      { title: 'Email Copywriting', desc: 'Write compelling subject lines, preview text, and body copy for each email in every flow.' },
+      { title: 'Template Design', desc: 'Design branded email templates matching client visual identity.' },
+      { title: 'Build Flows in Platform', desc: 'Set up triggers, delays, conditions, and email sequences in the email tool.' },
+      { title: 'Test Emails', desc: 'Send test emails, check rendering on mobile/desktop, verify links and tracking.' },
+      { title: 'Spam Score Check', desc: 'Run emails through a spam checker and optimize to ensure deliverability.' },
+      { title: 'Activate & Monitor', desc: 'Turn flows live, monitor open rates, click rates, and conversion for the first 2 weeks.' },
+    ]
+  },
+  {
+    id: 'email-mgmt',
+    category: 'email',
+    icon: '📬',
+    title: 'Monthly Email Management',
+    price: '$600 – $1,200 CAD/month',
+    steps: [
+      { title: 'Monthly Content Calendar', desc: 'Plan all campaign emails for the month: promotions, newsletters, launches, etc.' },
+      { title: 'Copywriting', desc: 'Write all email copy for the month, tailored to brand voice and audience.' },
+      { title: 'Design Each Email', desc: 'Design each campaign email using the brand template, with visuals and CTAs.' },
+      { title: 'Segment the List', desc: 'Choose the right audience segment for each campaign to maximize relevance.' },
+      { title: 'Schedule & Send', desc: 'Schedule emails at optimal send times based on audience behavior data.' },
+      { title: 'A/B Test Subject Lines', desc: 'Test 2 subject line variants on each campaign for ongoing optimization.' },
+      { title: 'Monitor Performance', desc: 'Track open rate, CTR, revenue per email, unsubscribes, and spam complaints.' },
+      { title: 'List Hygiene', desc: 'Clean unengaged subscribers monthly to protect sender reputation.' },
+      { title: 'Monthly Report', desc: 'Deliver a performance summary with key metrics, wins, and recommendations.' },
+    ]
+  },
+  {
+    id: 'ad-creatives',
+    category: 'creative',
+    icon: '🎨',
+    title: 'Ad Creatives (Images/Videos)',
+    price: '$800 – $2,000 CAD',
+    steps: [
+      { title: 'Creative Brief', desc: 'Define campaign objective, target audience, key message, offer, and desired emotion/tone.' },
+      { title: 'Competitor Creative Research', desc: 'Analyze what top competitors and industry brands are running in their ads.' },
+      { title: 'Concept Development', desc: 'Develop 2–3 creative concepts (hooks, angles, visual styles) for client approval.' },
+      { title: 'Copywriting for Ads', desc: 'Write ad copy: hook text, overlay copy, captions, and CTAs for each creative.' },
+      { title: 'Asset Collection', desc: 'Gather product photos, lifestyle images, brand assets, and any video footage needed.' },
+      { title: 'Design Static Creatives', desc: 'Design image ads in correct sizes for each platform (Facebook, Instagram, Google Display).' },
+      { title: 'Video Editing (if applicable)', desc: 'Edit video ads with captions, transitions, music, branding, and CTA overlays.' },
+      { title: 'Format for All Placements', desc: 'Export in all required sizes: feed, story, reel, banner, etc.' },
+      { title: 'Client Review', desc: 'Present creatives for approval. Make revision round.' },
+      { title: 'Final Export & Delivery', desc: 'Deliver all final files organized by platform and placement.' },
+    ]
+  },
+  {
+    id: 'brochure',
+    category: 'creative',
+    icon: '📖',
+    title: 'Catalog / Brochure Design',
+    price: '$1,000 – $2,500 CAD',
+    steps: [
+      { title: 'Design Brief', desc: 'Define purpose (print vs. digital), number of pages, key sections, and tone of the piece.' },
+      { title: 'Collect Content', desc: 'Gather all text copy, product descriptions, pricing, images, and contact info.' },
+      { title: 'Competitor & Inspiration Research', desc: 'Review similar brochures/catalogs to establish a design direction that stands out.' },
+      { title: 'Layout Planning', desc: 'Sketch or wireframe the page structure and section flow.' },
+      { title: 'Template / Style Guide Setup', desc: 'Define consistent fonts, colors, spacing, and grid system for all pages.' },
+      { title: 'Design All Pages', desc: 'Design each page applying brand identity, layout, imagery, and copy.' },
+      { title: 'Proofreading', desc: 'Review all text for spelling, grammar, and consistency errors.' },
+      { title: 'Client Review Round 1', desc: 'Share the full draft. Collect consolidated feedback.' },
+      { title: 'Revisions', desc: 'Apply requested changes. Up to 2 revision rounds included.' },
+      { title: 'Print-Ready / Digital Export', desc: 'Export in PDF with correct color profiles (CMYK for print, RGB for digital), bleed, and crop marks.' },
+      { title: 'Deliver Final Files', desc: 'Hand over print-ready PDF, editable source files, and any image assets.' },
+    ]
+  },
+  {
+    id: 'foundation',
+    category: 'package',
+    icon: '🏗️',
+    title: 'Foundation Package',
+    price: '$2,500 – $3,500 CAD',
+    steps: [
+      { title: 'Kickoff & Onboarding', desc: 'Sign contract, collect deposit, gather brand assets, and set project timeline.' },
+      { title: 'Shopify Store Setup', desc: 'Create or configure Shopify account, install theme, set up basic store structure.' },
+      { title: 'Product Upload', desc: 'Add products with descriptions, images, variants, and pricing.' },
+      { title: 'Basic Design Customization', desc: 'Apply brand colors, logo, fonts, and homepage layout to the theme.' },
+      { title: 'Payment & Shipping Setup', desc: 'Configure payment gateways, shipping zones, taxes, and policies.' },
+      { title: 'Google Ads Account Setup', desc: 'Create Google Ads account, link to Analytics, set up billing.' },
+      { title: '1 Campaign Build', desc: 'Create one Search or Shopping campaign targeting the core product/service.' },
+      { title: 'Basic Conversion Tracking', desc: 'Install Google tag, set up purchase or lead conversion tracking.' },
+      { title: 'Test Everything', desc: 'Place a test order, run a test ad, verify tracking is firing correctly.' },
+      { title: 'Launch & Handover', desc: 'Go live, hand over all logins, and provide a quick-start guide.' },
+    ]
+  },
+  {
+    id: 'growth-pkg',
+    category: 'package',
+    icon: '📈',
+    title: 'Growth Package',
+    price: '$5,000 – $7,000 CAD',
+    steps: [
+      { title: 'Strategy & Planning Session', desc: 'Map conversion goals, funnel stages, ad strategy, and 90-day growth plan.' },
+      { title: 'Conversion-Focused Shopify Build', desc: 'Build Shopify store with conversion-optimized layout, UX, and speed.' },
+      { title: 'Product Pages Optimization', desc: 'Write persuasive product descriptions, add reviews, optimize images and CTAs.' },
+      { title: 'Google Ads Setup (2–3 Campaigns)', desc: 'Build Search, Shopping, and/or Performance Max campaigns with full keyword research.' },
+      { title: 'Audience & Targeting Setup', desc: 'Define and build remarketing audiences, customer match lists, and lookalikes.' },
+      { title: 'Full Conversion Tracking', desc: 'Set up GA4, Google Tag Manager, enhanced ecommerce tracking, and event tracking.' },
+      { title: 'Funnel Build', desc: 'Create landing page, thank-you page, and lead nurture sequence.' },
+      { title: 'Retargeting Campaigns', desc: 'Build retargeting ad sets for cart abandoners, page visitors, and past buyers.' },
+      { title: 'Email Welcome Flow', desc: 'Set up a 3–5 email welcome/nurture sequence for new subscribers.' },
+      { title: 'QA & Testing', desc: 'Test full funnel end-to-end: store, ads, tracking, and email flows.' },
+      { title: 'Launch', desc: 'Activate all campaigns and flows, monitor closely for first 72 hours.' },
+      { title: 'Handover & Training', desc: 'Deliver full documentation, walkthrough session, and 30-day check-in schedule.' },
+    ]
+  },
+  {
+    id: 'scale-pkg',
+    category: 'package',
+    icon: '🏆',
+    title: 'Scale Package',
+    price: '$8,000 – $12,000 CAD',
+    steps: [
+      { title: 'Full Business & Brand Audit', desc: 'Review current website, ads, email, content, and analytics for baseline performance.' },
+      { title: 'Growth Strategy Workshop', desc: 'Deep planning session: ICP, positioning, channels, budgets, 6-month roadmap.' },
+      { title: 'Premium Website / Full Redesign', desc: 'Build or completely redesign the website with custom design and full conversion optimization.' },
+      { title: 'Advanced Ads Strategy', desc: 'Multi-channel ad strategy across Google Search, Shopping, Display, YouTube, and/or Meta.' },
+      { title: 'Full Funnel System Build', desc: 'Build complete top-to-bottom funnel: awareness → nurture → convert → retain.' },
+      { title: 'Conversion Rate Optimization', desc: 'Apply CRO across all pages: heatmaps, A/B testing framework, copy testing.' },
+      { title: 'Ad Creatives Production', desc: 'Design a full set of static and video ad creatives for all placements.' },
+      { title: 'Advanced Email Automation', desc: 'Build 5+ automated email flows: welcome, abandoned cart, post-purchase, win-back, VIP.' },
+      { title: 'Full Analytics & Attribution Setup', desc: 'Set up GA4, GTM, Facebook Pixel, server-side tracking, and custom dashboards.' },
+      { title: 'First Month Ad Management', desc: 'Actively manage all campaigns for the first 30 days, optimizing daily.' },
+      { title: 'Team Training', desc: 'Train the client team on how to manage the tools, review reports, and make decisions.' },
+      { title: 'Launch Plan & Execution', desc: 'Staged launch: soft launch → full launch → paid traffic activation sequence.' },
+      { title: 'Monthly Review Structure', desc: 'Set up ongoing KPI dashboard and monthly review cadence for Ongoing Partnership.' },
+    ]
+  },
+];
+
+function renderCards(data) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  data.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.cat = s.category;
+    card.style.animationDelay = (i * 0.05) + 's';
+
+    card.innerHTML = `
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-icon">${s.icon}</div>
+        <div class="card-meta">
+          <div class="card-category">${s.category.toUpperCase()}</div>
+          <div class="card-title">${s.title}</div>
+          <div class="card-price">${s.price}</div>
+        </div>
+        <div class="toggle-icon">▾</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+        <div class="progress-label">0 / ${s.steps.length} steps</div>
+      </div>
+      <div class="steps">
+        ${s.steps.map((step, idx) => `
+          <div class="step" style="animation-delay:${idx * 0.04}s">
+            <div class="step-num">${idx + 1}</div>
+            <div class="step-content">
+              <div class="step-title">${step.title}</div>
+              <div class="step-desc">${step.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(header) {
+  const card = header.closest('.card');
+  card.classList.toggle('open');
+}
+
+function filter(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat === 'all' ? services : services.filter(s => s.category === cat);
+  renderCards(filtered);
+}
+
+function expandAll() {
+  const cards = document.querySelectorAll('.card');
+  const allOpen = [...cards].every(c => c.classList.contains('open'));
+  cards.forEach(c => allOpen ? c.classList.remove('open') : c.classList.add('open'));
+  document.querySelector('.expand-all').textContent = allOpen ? 'Expand All' : 'Collapse All';
+}
+
+renderCards(services);
+</script>
+
+</body>
+</html>
